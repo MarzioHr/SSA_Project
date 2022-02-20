@@ -2,7 +2,7 @@ import paho.mqtt.client as mqtt
 import time
 
 # Constants #
-BROKER = "test.mosquitto.org" # Use External Broker
+BROKER = "127.0.0.1" # Use External Broker
 
 # Main Class #
 class Thermostat:

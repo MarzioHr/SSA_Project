@@ -2,7 +2,7 @@
 
 from cryptography.fernet import Fernet
 
-KEY_FILE = "config/key.bin"
+KEY_FILE = "setup/key.bin"
 CLEAR_INPUT = "setup/broker_credentials_clear.txt"
 
 fopen = open(KEY_FILE,"rb")

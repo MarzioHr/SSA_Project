@@ -1,3 +1,5 @@
+"""Module to demonstrate the Signing of a File using RSA. Outputs a .sig file to verify file integrity prior to execution."""
+
 import base64
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes

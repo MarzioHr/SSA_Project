@@ -15,7 +15,7 @@ with open('setup/private.key', 'rb') as key_file:
     )
 
 # Load the contents of the file to be signed.
-with open('device/thermometer.py', 'rb') as f:
+with open('controller/main.py', 'rb') as f:
     payload = f.read()
 
 # Sign the payload file.
@@ -29,5 +29,5 @@ signature = base64.b64encode(
         hashes.SHA256(),
     )
 )
-with open('signature.sig', 'wb') as f:
+with open('main.sig', 'wb') as f:
     f.write(signature)

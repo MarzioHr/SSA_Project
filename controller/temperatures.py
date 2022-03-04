@@ -1,9 +1,9 @@
-"""Temperature Module of the Controller (Subscriber). Includes Loop to display all device temperatures back to User."""
+"""Temperature Module of the Controller (Subscriber) to display all devices temp to User."""
 
-import time
-import certifi
 import sys
+import time
 from queue import Queue
+import certifi
 import paho.mqtt.client as mqtt
 
 # CONSTANTS #
@@ -13,13 +13,14 @@ TEMP_TOPIC = "thermometers/temp" # temp topic to subscribe to
 q=Queue() # initialise queue
 
 def on_message(client, userdata, message):
-   '''Function to handle what to do once a message is received.'''
-   q.put(message) # add message to queue
+    '''Function to handle what to do once a message is received.'''
+    q.put(message) # add message to queue
 
 def temp_loop(user,password,host,port):
     '''
     Main Function to handle incoming temp values and print messages.
-    Subsbcribes to the temp topic of the broker in a new thread and ensures all received messages are added to the queue.
+    Subscribes to the temp topic of the broker in a new thread and
+    ensures all received messages are added to the queue.
     Loops through all messages in the queue and updates temp values displayed to user.
     '''
     client = mqtt.Client("Controller/Temps") # set client id
@@ -39,9 +40,9 @@ def temp_loop(user,password,host,port):
         if not q.empty(): # if queue is not empty
             message = q.get() # get the latest message
             if message is not None:
-                room, temp = str(message.payload.decode("utf-8")).split(": ") # split device prefix and temp data
+                room, temp = str(message.payload.decode("utf-8")).split(": ") # split room and temp
                 temps[room] = temp # add temp data for specified room (prefix) to dict
-            for i in range(lines): # for number of lines
+            for _ in range(lines): # for number of lines
                 sys.stdout.write("\x1b[1A\x1b[2K") # move up cursor and delete whole line in stdout
             lines = 0 # reset line count
             for room, value in temps.items(): # for all room+temp pairs in dict

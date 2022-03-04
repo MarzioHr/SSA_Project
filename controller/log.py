@@ -1,9 +1,8 @@
-"""Log Module of the Controller (Subscriber). Includes Loop to display Logs from Broker back to User."""
+"""Log Module of the Controller (Subscriber) to display Logs from Broker back to User."""
 
 import time
-import certifi
-import sys
 from queue import Queue
+import certifi
 import paho.mqtt.client as mqtt
 
 # CONSTANTS #
@@ -19,7 +18,8 @@ def on_message(client, userdata, message):
 def log_loop(user:str,password:str,host:str,port:str):
     '''
     Main Function to handle log and print messages.
-    Subsbcribes to the log topic of the broker in a new thread and ensures all received messages are added to the queue.
+    Subsbcribes to the log topic of the broker in a new thread
+    and ensures all received messages are added to the queue.
     Loops through all messages in the queue and prints them back to the user.
     '''
     client = mqtt.Client("Controller/Logs") # set client id

@@ -1,4 +1,4 @@
-# Development Team Project: Suspect Sources System for the Dutch National Cyber Security Centre
+# Development Team Project: Secure System Architecture
 
 ## Table of Contents
 1. [Project Introduction](#introduction)
@@ -6,10 +6,10 @@
 3. [Security Requirements](#security-requirements)
 4. [Implementation Challenges](#implementation-challenges)
 5. [Conclusion](#conclusion)
-6. [Appendix A: Vulnerability Risk Assessment](#appendix-a)
-7. [Appendix B: System Architecture](#appendix-b)
-8. [Appendix C: Execution Instructions via Docker](#appendix-c)
-9. [Appendix D: Testing and Quality Assurance](#appendix-d)
+6. [Appendix A: Vulnerability Risk Assessment](#appendix-a-vulnerability-risk-assessment)
+7. [Appendix B: System Architecture](#appendix-b-system-architecture)
+8. [Appendix C: Execution Instructions via Docker](#appendix-c-execution-instructions-via-docker)
+9. [Appendix D: Testing and Quality Assurance](#appendix-d-testing-and-quality-assurance)
 
 
 ## Project Introduction
@@ -30,7 +30,7 @@ The prototype has been developed based on the following SysML diagrams:
 
 
 ## Vulnerabilities and Mitigations
-The vulnerability analysis presented in the Design Document has been extended to include a quantitative assessment based on likelihood and impact scales allowing us to create a raking and prioritize the implementation of the mitigation measures ([Appendix A: Vulnerability Risk Assessment](#appendix-a)). 
+The vulnerability analysis presented in the Design Document has been extended to include a quantitative assessment based on likelihood and impact scales allowing us to create a raking and prioritize the implementation of the mitigation measures ([Appendix A: Vulnerability Risk Assessment](#appendix-a-vulnerability-risk-assessment)). 
 
 In addition to our analysis, the OWASP top 10 vulnerabilities of IoT (OWASP, 2018) were considered when identifying security controls.
 
@@ -63,7 +63,6 @@ Security features for future work include access control mechanism, monitoring a
 
 
 ## APPENDIX A: Vulnerability Risk Assessment
-<a name="appendix-a"></a>
 The main goal of this assessment is to assign a risk score to each vulnerability identified in the AD Tree analysis based on the technical capability needed to exploit the vulnerability (Likelihood) and the damage caused by the exploit (Impact) (Sutton, 2014). 
 
 The following table includes list of vulnerabilities found and the risk evaluation along with the mitigations identified for each vulnerability: 
@@ -78,12 +77,10 @@ The following table includes list of vulnerabilities found and the risk evaluati
 
 
 ## APPENDIX B: System Architecture
-<a name="appendix-b"></a>
 TBA
 
 
 ## APPENDIX C: Execution Instructions via Docker
-<a name="appendix-c"></a>
 To make the execution as seamless as possible, we created Dockerfiles for both the Client Device and the Controller. This allows for building Docker Images for both and launching one or more of each as seperate Container Instances.
 
 Docker is an open-source project that automates the deployment of applications inside software containers, by providing an additional layer of abstraction and automation of operating-system-level virtualization on Linux, Mac OS and Windows.
@@ -110,7 +107,6 @@ By running the “run” command multiple times on the same image, you can spin 
 
 
 ## APPENDIX D: Testing and Quality Assurance
-<a name="appendix-d"></a>
 Throughout the project, three levels of testing were utilised to ensure quality and functional integrity of the system:
 - **Unit Testing**
 - **Continuous Review via Linters**

@@ -6,7 +6,7 @@
 3. [Security Requirements](#security-requirements)
 4. [Implementation Challenges](#implementation-challenges)
 5. [Conclusion](#conclusion)
-6. [Appendix A: Vulnerability Risk Assessment](#appendix-a:-vulnerability-risk-assessment)
+6. [Appendix A: Vulnerability Risk Assessment](#appendix-a)
 7. [Appendix B: System Architecture](#appendix-b)
 8. [Appendix C: Execution Instructions via Docker](#appendix-c)
 9. [Appendix D: Testing and Quality Assurance](#appendix-d)
@@ -28,10 +28,12 @@ The prototype has been developed based on the following SysML diagrams:
 
 ![Sequence Diagramm MQTT Authentication](https://i.imgur.com/la9EZ3i.png)
 
+
 ## Vulnerabilities and Mitigations
-The vulnerability analysis presented in the Design Document has been extended to include a quantitative assessment based on likelihood and impact scales allowing us to create a raking and prioritize the implementation of the mitigation measures ([Appendix A: Vulnerability Risk Assessment](#appendix-a:-vulnerability-risk-assessment)). 
+The vulnerability analysis presented in the Design Document has been extended to include a quantitative assessment based on likelihood and impact scales allowing us to create a raking and prioritize the implementation of the mitigation measures ([Appendix A: Vulnerability Risk Assessment](#appendix-a)). 
 
 In addition to our analysis, the OWASP top 10 vulnerabilities of IoT (OWASP, 2018) were considered when identifying security controls.
+
 
 ## Security Requirements
 These are the Security Controls that have been implemented in the prototype: 
@@ -50,7 +52,9 @@ Docker containers have been used in the prototype to configure light virtual mac
 Common distributed system challenges include latency and message loss, our prototype also has IoT limitations like bandwidth and processing power (Gerber & Romeo, 2020). The table below demonstrates what measures MQTT has taken to lessen these challenges:
 
 ![IoT Challenges](https://i.imgur.com/Ld7sZT0.png)
+
 *Figure 4: Challenges in IoT and Mitigations offered by MQTT.*
+
 
 ## Conclusion
 Due to the time constrain of the project, during the prototype development we have concentrated our efforts on the implementation of the security requirements and therefore, some of the functional requirements like the temperature control have been omitted. 
@@ -59,20 +63,27 @@ Security features for future work include access control mechanism, monitoring a
 
 
 ## APPENDIX A: Vulnerability Risk Assessment
+<a name="appendix-a"></a>
 The main goal of this assessment is to assign a risk score to each vulnerability identified in the AD Tree analysis based on the technical capability needed to exploit the vulnerability (Likelihood) and the damage caused by the exploit (Impact) (Sutton, 2014). 
 
 The following table includes list of vulnerabilities found and the risk evaluation along with the mitigations identified for each vulnerability: 
 
 ![Vulnerability Impact and Liklihood](https://i.imgur.com/8gyt44r.png)
+
 *Figure 5: Vulnerabilities and their Impact and Liklihood.*
 
 ![Risk Definition](https://i.imgur.com/eEYj0JL.png)
+
 *Figure 6: Risk Definition.*
 
+
 ## APPENDIX B: System Architecture
+<a name="appendix-b"></a>
 TBA
 
+
 ## APPENDIX C: Execution Instructions via Docker
+<a name="appendix-c"></a>
 To make the execution as seamless as possible, we created Dockerfiles for both the Client Device and the Controller. This allows for building Docker Images for both and launching one or more of each as seperate Container Instances.
 
 Docker is an open-source project that automates the deployment of applications inside software containers, by providing an additional layer of abstraction and automation of operating-system-level virtualization on Linux, Mac OS and Windows.
@@ -97,7 +108,9 @@ ssa-project:device
 
 By running the “run” command multiple times on the same image, you can spin up multiple containers for the same category. This makes sense for when you want to test multiple devices running on the same network and all communicating with a single controller.
 
+
 ## APPENDIX D: Testing and Quality Assurance
+<a name="appendix-d"></a>
 Throughout the project, three levels of testing were utilised to ensure quality and functional integrity of the system:
 - **Unit Testing**
 - **Continuous Review via Linters**
@@ -115,15 +128,17 @@ Continuous Source Code review is done to ensure the structure, style, complexity
 By following the Pylint feedback, we quickly raised our initial code score from around 6 to 9+ / 10 points for both the client and device modules. The only remaining issue were unused arguments which were set by the on_connect() function from Paho MQTT and our Thermometer device class being very slim (only PoC) and thus having too few public methods to call.
 
 ![Pylint Final Score for Source Code](https://i.imgur.com/8EnPo1H.png)
+
 *Figure 7: Pylint Final Score for Device Source Code*
 
 ![Pylint Final Score for Source Code](https://i.imgur.com/NhUp0CB.png)
-*Figure 8: Pylint Final Score for Controller Source Code*
 
+*Figure 8: Pylint Final Score for Controller Source Code*
 
 Bandit flagged one remaining low severity security issue namely that we using a pseudo-random generator for our device temperature allocation with the random.uniform() function, and that this is not suitable for security/cryptographic purposes. However, we only use the uniform function to allocate random temperatures to our thermometer devices as test data and therefore using pseudo-random number generators are fine. Other than that no issues were flagged.
 
 ![Bandit's Final Run with No Issues Found](https://i.imgur.com/QeE8BrV.png)
+
 *Figure 9: Bandit's Final Run with No Issues Found.*
 
 The last type of testing was done before submitting the final project. Functional Testing ensures that all end-to-end use cases and user scenarios that will be done via the System are included and working. First, we established a Functional Test Plan containing a full checklist of test cases for the individual roles and the System in general. We then proceeded with manually testing each of the test scenarios to ensure that the System as a whole is working as per the use-case specifications. The complete Functional Test Plan can be found below. Doing so gave certainty that all use cases the System set out to cater towards were fulfilled.

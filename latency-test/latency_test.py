@@ -1,3 +1,5 @@
+"""Module to test latency between the publishing of a message and the reception at Subscriber."""
+
 import sys
 import time
 from queue import Queue

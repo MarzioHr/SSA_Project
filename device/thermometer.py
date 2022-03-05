@@ -70,7 +70,7 @@ def label_validation(check_label:str):
     '''
     Checks if a given device label is conform to the system's standards.
     This is done to prevent any sort of malicious user inputs and injection attacks.
-    Validation: min. 3 characters max. 20 characters and at least 1 Letter. 
+    Validation: min. 3 characters max. 20 characters and at least 1 Letter.
     May only contain letters, numbers, spaces and '-'.
     Returns: True if conform and False if not.
     '''

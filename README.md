@@ -6,7 +6,7 @@
 3. [Security Requirements](#security-requirements)
 4. [Implementation Challenges](#implementation-challenges)
 5. [Conclusion](#conclusion)
-6. [Appendix A: Vulnerability Risk Assessment](#appendix-a)
+6. [Appendix A: Vulnerability Risk Assessment](#appendix-a:-vulnerability-risk-assessment)
 7. [Appendix B: System Architecture](#appendix-b)
 8. [Appendix C: Execution Instructions via Docker](#appendix-c)
 9. [Appendix D: Testing and Quality Assurance](#appendix-d)
@@ -29,7 +29,7 @@ The prototype has been developed based on the following SysML diagrams:
 ![Sequence Diagramm MQTT Authentication](https://i.imgur.com/la9EZ3i.png)
 
 ## Vulnerabilities and Mitigations
-The vulnerability analysis presented in the Design Document has been extended to include a quantitative assessment based on likelihood and impact scales allowing us to create a raking and prioritize the implementation of the mitigation measures (APPENDIX A: Vulnerability Risk Assessment). 
+The vulnerability analysis presented in the Design Document has been extended to include a quantitative assessment based on likelihood and impact scales allowing us to create a raking and prioritize the implementation of the mitigation measures ([Appendix A: Vulnerability Risk Assessment](#appendix-a:-vulnerability-risk-assessment)). 
 
 In addition to our analysis, the OWASP top 10 vulnerabilities of IoT (OWASP, 2018) were considered when identifying security controls.
 
@@ -50,7 +50,7 @@ Docker containers have been used in the prototype to configure light virtual mac
 Common distributed system challenges include latency and message loss, our prototype also has IoT limitations like bandwidth and processing power (Gerber & Romeo, 2020). The table below demonstrates what measures MQTT has taken to lessen these challenges:
 
 ![IoT Challenges](https://i.imgur.com/Ld7sZT0.png)
-
+*Figure 4: Challenges in IoT and Mitigations offered by MQTT.*
 
 ## Conclusion
 Due to the time constrain of the project, during the prototype development we have concentrated our efforts on the implementation of the security requirements and therefore, some of the functional requirements like the temperature control have been omitted. 
@@ -64,8 +64,10 @@ The main goal of this assessment is to assign a risk score to each vulnerability
 The following table includes list of vulnerabilities found and the risk evaluation along with the mitigations identified for each vulnerability: 
 
 ![Vulnerability Impact and Liklihood](https://i.imgur.com/8gyt44r.png)
+*Figure 5: Vulnerabilities and their Impact and Liklihood.*
 
 ![Risk Definition](https://i.imgur.com/eEYj0JL.png)
+*Figure 6: Risk Definition.*
 
 ## APPENDIX B: System Architecture
 TBA
@@ -76,11 +78,15 @@ To make the execution as seamless as possible, we created Dockerfiles for both t
 Docker is an open-source project that automates the deployment of applications inside software containers, by providing an additional layer of abstraction and automation of operating-system-level virtualization on Linux, Mac OS and Windows.
 
 We have included the .tar archives of the docker images directly in the Repo, which can be loaded using the command:
+
 `$ docker import file [REPOSITORY[:TAG]]`
+
 Documentation: https://docs.docker.com/engine/reference/commandline/import/
 
 Once the images are present in your Docker, you will be able to run a new container using the images. To do so, please ensure that you run the container in interactive mode, to be able to interact with the python user inputs:
+
 `$ docker run -it [REPOSITORY[:TAG]]`
+
 Documentation: https://docs.docker.com/engine/reference/commandline/run/
 
 When importing the images you can set a repository name and tag, which you will need to reference in the run command. One example for naming conventions could for instance be:
@@ -108,24 +114,21 @@ Continuous Source Code review is done to ensure the structure, style, complexity
 
 By following the Pylint feedback, we quickly raised our initial code score from around 6 to 9+ / 10 points for both the client and device modules. The only remaining issue were unused arguments which were set by the on_connect() function from Paho MQTT and our Thermometer device class being very slim (only PoC) and thus having too few public methods to call.
 
-![Pylint Final Score for Source Code](https://i.imgur.com/i26onzg.png)
+![Pylint Final Score for Source Code](https://i.imgur.com/8EnPo1H.png)
+*Figure 7: Pylint Final Score for Device Source Code*
 
-*Figure X: Pylint Final Score for Device Source Code*
-
-![Pylint Final Score for Source Code](https://i.imgur.com/gbv64pg.png)
-
-*Figure X: Pylint Final Score for Controller Source Code*
+![Pylint Final Score for Source Code](https://i.imgur.com/NhUp0CB.png)
+*Figure 8: Pylint Final Score for Controller Source Code*
 
 
 Bandit flagged one remaining low severity security issue namely that we using a pseudo-random generator for our device temperature allocation with the random.uniform() function, and that this is not suitable for security/cryptographic purposes. However, we only use the uniform function to allocate random temperatures to our thermometer devices as test data and therefore using pseudo-random number generators are fine. Other than that no issues were flagged.
 
 ![Bandit's Final Run with No Issues Found](https://i.imgur.com/QeE8BrV.png)
-
-*Figure X: Bandit's Final Run with No Issues Found.*
+*Figure 9: Bandit's Final Run with No Issues Found.*
 
 The last type of testing was done before submitting the final project. Functional Testing ensures that all end-to-end use cases and user scenarios that will be done via the System are included and working. First, we established a Functional Test Plan containing a full checklist of test cases for the individual roles and the System in general. We then proceeded with manually testing each of the test scenarios to ensure that the System as a whole is working as per the use-case specifications. The complete Functional Test Plan can be found below. Doing so gave certainty that all use cases the System set out to cater towards were fulfilled.
 
-The full end-to-end Functional Test Plan can be found here: [Functional Test Plan](https://marziohr.github.io/SSA_Project/Functional%20Test%20Plan.pdf)
+The full end-to-end Functional Test Plan can be found here: [Functional Test Plan](https://github.com/MarzioHr/SSA_Project/blob/main/Functional%20Test%20Plan.pdf)
 
 
 ## Reference List

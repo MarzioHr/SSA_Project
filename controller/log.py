@@ -22,16 +22,16 @@ def log_loop(user:str,password:str,host:str,port:str):
     and ensures all received messages are added to the queue.
     Loops through all messages in the queue and prints them back to the user.
     '''
-    client = mqtt.Client("Controller/Logs") # set client id
+    log_client = mqtt.Client("Controller/Logs") # set client id
     print("\nConnecting to Broker..")
-    client.username_pw_set(username=user,password=password) # set username and password as per args
-    client.tls_set(certifi.where()) # use certifi library to set TLS cert of host
-    client.connect(host, port=int(port)) # connect to host and port as per args
-    client.on_message = on_message # bind custom on_message function to MQTT client
+    log_client.username_pw_set(username=user,password=password) # set user and pass as per args
+    log_client.tls_set(certifi.where()) # use certifi library to set TLS cert of host
+    log_client.connect(host, port=int(port)) # connect to host and port as per args
+    log_client.on_message = on_message # bind custom on_message function to MQTT client
     print("Subscribing to topic",LOG_TOPIC)
-    client.subscribe(LOG_TOPIC)
+    log_client.subscribe(LOG_TOPIC)
     # client Loop
-    client.loop_start() # start subscribe loop in new thread
+    log_client.loop_start() # start subscribe loop in new thread
     print("\nBroker Logs\n____________________")
     while True:
         if not q.empty(): # if queue is not empty

@@ -70,20 +70,27 @@ def label_validation(check_label:str):
     '''
     Checks if a given device label is conform to the system's standards.
     This is done to prevent any sort of malicious user inputs and injection attacks.
-    Validation: min. 3 characters and may only contain letters, numbers, spaces and '-'.
+    Validation: min. 3 characters max. 20 characters and at least 1 Letter. 
+    May only contain letters, numbers, spaces and '-'.
     Returns: True if conform and False if not.
     '''
     valid_char = (' ','-')
     min_len = 3
-    if len(check_label) < min_len: # checks the length of the given label
-        return False # returns False if label length is less than 3
+    max_len = 20
+    min_1_letter = False # string has at least 1 letter
+    if len(check_label) < min_len or len(check_label) > max_len: # checks the len of the given label
+        return False # returns False if label length is less than 3 or more than 20
     for char in check_label: # checks each character of given label string
+        if char.isalpha() and min_1_letter is not True:
+            min_1_letter = True # set True that string has at least 1 letter
         if char.isalnum():
             continue
         if char in valid_char:
             continue
         return False # returns False if a character does not meet validation rules
-    return True # returns True if all validation rules are met
+    if min_1_letter is True:
+        return True # returns True if all validation rules are met
+    return False # returns False if label does not at least include 1 letter
 
 # Main Class #
 class Thermometer:

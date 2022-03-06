@@ -7,27 +7,27 @@
 4. [Implementation Challenges](#implementation-challenges)
 5. [Conclusion](#conclusion)
 6. [Appendix A: Vulnerability Risk Assessment](#appendix-a-vulnerability-risk-assessment)
-7. [Appendix B: System Architecture](#appendix-b-system-architecture)
+7. [Appendix B: System Structure](#appendix-b-system-structure)
 8. [Appendix C: Execution Instructions via Docker](#appendix-c-execution-instructions-via-docker)
-9. [Appendix D: Testing and Quality Assurance](#appendix-d-testing-and-quality-assurance)
+9. [Appendix D: Project Testing](#appendix-d-project-testing)
 
 
 ## Project Introduction
 The goal of this project is to implement a system prototype for a Smart Home system integrating the security requirements identified on the Attack-Defence Tree analysis previously performed.
 
-The prototype is composed of one client device that manages several thermostat controller nodes. The MQTT (Message Queuing Telemetry Transport) message broker has been used to manage communication between nodes. The MQTT has become the standard protocol for the Internet of Things (IoT) due to its simple and lightweight clients that require minimal resources (Yuan, 2021). 
-MQTT aims to be a protocol for resource-constrained devices and low-bandwidth, high-latency, unreliable networks (MQTT, 2021). 
-
-Furthermore, MQTT includes security features such as data in transit encryption using TLS and strong client authentication that cover most of the security requirements found in our analysis. 
+The prototype is composed of one client device that manages several thermostat controller nodes. The MQTT (Message Queuing Telemetry Transport) message broker has been used to manage communication between nodes. The MQTT has become the standard protocol for the Internet of Things (IoT) due to its simple and lightweight clients that require minimal resources (Yuan, 2021). MQTT aims to be a protocol for resource-constrained devices and low-bandwidth, high-latency, unreliable networks (MQTT, 2021). Furthermore, MQTT includes security features such as data in transit encryption using TLS and strong client authentication that cover most of the security requirements found in our analysis. 
 
 The prototype has been developed based on the following SysML diagrams:
 
+<center>
 ![SysML Requirements](https://i.imgur.com/LL4Sf53.png)
 
 ![SysML Security Requirements](https://i.imgur.com/gQhlphz.png)
 
-![Sequence Diagramm MQTT Authentication](https://i.imgur.com/la9EZ3i.png)
+![Sequence Diagramm MQTT Authentication](https://i.imgur.com/ipjzlEU.png)
 
+![Sequence Diagramm MQTTS Handshake](https://i.imgur.com/DB9Qv4B.png)
+</center>
 
 ## Vulnerabilities and Mitigations
 The vulnerability analysis presented in the Design Document has been extended to include a quantitative assessment based on likelihood and impact scales allowing us to create a raking and prioritize the implementation of the mitigation measures ([Appendix A: Vulnerability Risk Assessment](#appendix-a-vulnerability-risk-assessment)). 
@@ -53,7 +53,7 @@ Common distributed system challenges include latency and message loss, our proto
 
 ![IoT Challenges](https://i.imgur.com/Ld7sZT0.png)
 
-*Figure 4: Challenges in IoT and Mitigations offered by MQTT.*
+*Figure 5: Challenges in IoT and Mitigations offered by MQTT.*
 
 
 ## Conclusion
@@ -69,15 +69,45 @@ The following table includes list of vulnerabilities found and the risk evaluati
 
 ![Vulnerability Impact and Liklihood](https://i.imgur.com/8gyt44r.png)
 
-*Figure 5: Vulnerabilities and their Impact and Liklihood.*
+*Figure 6: Vulnerabilities and their Impact and Liklihood.*
 
 ![Risk Definition](https://i.imgur.com/eEYj0JL.png)
 
-*Figure 6: Risk Definition.*
+*Figure 7: Risk Definition.*
 
 
-## APPENDIX B: System Architecture
-TBA
+## APPENDIX B: System Structure
+![Smart Home System Structure](https://i.imgur.com/quXhltf.png)
+
+*Figure 8: Smart Home System Structure.*
+
+The MQTT broker has been installed on an AWS EC2 instance and the domain “mosquitto.ssa-project.xyz” has been pointed to the instance public IP address. Using the certificate authority Let’s Encrypt TLS, certificates were generated for the domain and are used to encrypt the data sent via MQTT. Effectively this is done leveraging MQTTS (Message Queuing Telemetry Transport Secured), which is the TLS secured version of the MQTT protocol. There are two ports open:
+
+* **1883** used for MQTT
+* **1884** used for MQTTS
+
+For the proof-of-concept implementation the system fully utilises the MQTTS protocol.
+
+As an additional layer of security, user authentication has been enabled at the broker level. Whenever a device wants to connect to the broker it has to supply a valid username and password combination.
+
+The prototype has been developed in Python and the Python files are executed locally. Docker containers have been configured to run the client device and the IoT controller (Python flies) on separate instances in order to simulate distributed systems.
+
+### Folder Structure
+The project includes the four main folders:
+
+**Controller**: Includes all files necessary to run the controller (subscriber) of the OiT system. Prints back device temperatures and broker logs to user.
+
+**Device**: Includes all files necessary to run the thermometer device (publisher) of the OiT system. Publishes test data for a given device to display back to the controller.
+
+**Latency-test**: Includes a test script to measure the latency between the publishing of the messages and the reception at subscriber.
+
+**Setup**: Setup includes files to understand the initial setup of the project. In an actual deployment, this folder would not exist. In total, the folder includes four scripts:
+
+* *credential_encryption.py*: the python script used to encrypt the clear credentials initially and outputs the credentials.bin file as seen in the 'config' folder.
+* *fernet_key_gen.py*: the python script used to generate a new fernet master key and outputs the key.bin file as seen in the 'config' folder.
+* *signature_key_gen.py*: Python script to generate a new RSA public and private kea pair to sign and verify files.
+* *file_signing.py*: Python script used to demonstrate the generation of the signature of a python file using the private key.
+* *broker_credentials_clear.txt*: displays the Broker credentials prior to being encrypted (format: "host:port:user:password").
 
 
 ## APPENDIX C: Execution Instructions via Docker
@@ -106,7 +136,8 @@ ssa-project:device
 By running the “run” command multiple times on the same image, you can spin up multiple containers for the same category. This makes sense for when you want to test multiple devices running on the same network and all communicating with a single controller.
 
 
-## APPENDIX D: Testing and Quality Assurance
+## APPENDIX D: Project Testing
+### Quality Assurance
 Throughout the project, three levels of testing were utilised to ensure quality and functional integrity of the system:
 - **Unit Testing**
 - **Continuous Review via Linters**
@@ -125,21 +156,36 @@ By following the Pylint feedback, we quickly raised our initial code score from 
 
 ![Pylint Final Score for Source Code](https://i.imgur.com/8EnPo1H.png)
 
-*Figure 7: Pylint Final Score for Device Source Code*
+*Figure 9: Pylint Final Score for Device Source Code*
 
 ![Pylint Final Score for Source Code](https://i.imgur.com/NhUp0CB.png)
 
-*Figure 8: Pylint Final Score for Controller Source Code*
+*Figure 10: Pylint Final Score for Controller Source Code*
 
 Bandit flagged one remaining low severity security issue namely that we using a pseudo-random generator for our device temperature allocation with the random.uniform() function, and that this is not suitable for security/cryptographic purposes. However, we only use the uniform function to allocate random temperatures to our thermometer devices as test data and therefore using pseudo-random number generators are fine. Other than that no issues were flagged.
 
 ![Bandit's Final Run with No Issues Found](https://i.imgur.com/QeE8BrV.png)
 
-*Figure 9: Bandit's Final Run with No Issues Found.*
+*Figure 11: Bandit's Final Run with No Issues Found.*
 
 The last type of testing was done before submitting the final project. Functional Testing ensures that all end-to-end use cases and user scenarios that will be done via the System are included and working. First, we established a Functional Test Plan containing a full checklist of test cases for the individual roles and the System in general. We then proceeded with manually testing each of the test scenarios to ensure that the System as a whole is working as per the use-case specifications. The complete Functional Test Plan can be found below. Doing so gave certainty that all use cases the System set out to cater towards were fulfilled.
 
 The full end-to-end Functional Test Plan can be found here: [Functional Test Plan](https://github.com/MarzioHr/SSA_Project/blob/main/Functional%20Test%20Plan.pdf)
+
+### Latency Test
+Another point of interest to us was the latency of the MQTT protocol itself, as well as the implications of using MQTTS (TLS secured) over the standard protocol. For this reason, we have created a latency measurement script that captures the high-resolution timestamp at point of publishing a message and calculates the latency upon receiving the message at the subscriber client. This script can be found in the “latency-test” folder.
+
+Interestingly, we have found that there wasn’t a big difference latency-wise when comparing both protocols. Sending a message via MQTTS with our set-up broker took about 0.0001 seconds longer than using the non-TLS secured version of the protocol. The results for our test runs can be found here:
+
+![MQTT Latency Test](https://i.imgur.com/pns6zre.png)
+
+*Figure 12: Latency Test for MQTT.*
+
+![MQTTS Latency Test](https://i.imgur.com/AsCj40v.png)
+
+*Figure 13: Latency Test for MQTTS.*
+
+The reason for this is that with MQTT a client only needs to establish a connection once per session unlike protocols such as HTTP. During the handshake, more resources (especially CPU) are required with MQTTS, however, once the clients are connected, the overhead is negligible.
 
 
 ## Reference List
@@ -161,4 +207,5 @@ The HiveMQ Team (2015) Quality of Service 0,1 & 2 - MQTT Essentials: Part 6. Ava
 Tracy, P (2016) MQTT protocol minimizes network bandwidth for the internet of things. Available from: https://www.rcrwireless.com/20161129/fundamentals/mqtt-internet-of-things-tag31-tag99 [Accessed 26 February 2022]
 
 Yuan, M (2021) Getting to know MQTT. Available from: https://developer.ibm.com/articles/iot-mqtt-why-good-for-iot/ [Accessed 4 March 2022]
+
 Wang, C (2018) HTTP vs. MQTT: A tale of two IoT protocols. Available from:  https://cloud.google.com/blog/products/iot-devices/http-vs-mqtt-a-tale-of-two-iot-protocols [Accessed 26 February 2022]

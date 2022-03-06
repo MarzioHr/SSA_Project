@@ -10,6 +10,7 @@
 7. [Appendix B: System Structure](#appendix-b-system-structure)
 8. [Appendix C: Execution Instructions via Docker](#appendix-c-execution-instructions-via-docker)
 9. [Appendix D: Project Testing](#appendix-d-project-testing)
+10. [Reference List](#reference-list)
 
 
 ## Project Introduction
@@ -19,7 +20,6 @@ The prototype is composed of one client device that manages several thermostat c
 
 The prototype has been developed based on the following SysML diagrams:
 
-<center>
 ![SysML Requirements](https://i.imgur.com/LL4Sf53.png)
 
 ![SysML Security Requirements](https://i.imgur.com/gQhlphz.png)
@@ -27,7 +27,6 @@ The prototype has been developed based on the following SysML diagrams:
 ![Sequence Diagramm MQTT Authentication](https://i.imgur.com/ipjzlEU.png)
 
 ![Sequence Diagramm MQTTS Handshake](https://i.imgur.com/DB9Qv4B.png)
-</center>
 
 ## Vulnerabilities and Mitigations
 The vulnerability analysis presented in the Design Document has been extended to include a quantitative assessment based on likelihood and impact scales allowing us to create a raking and prioritize the implementation of the mitigation measures ([Appendix A: Vulnerability Risk Assessment](#appendix-a-vulnerability-risk-assessment)). 

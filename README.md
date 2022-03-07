@@ -14,7 +14,7 @@
 
 
 ## Project Introduction
-The goal of this project is to implement a system prototype for a Smart Home system integrating the security requirements identified on the Attack-Defence Tree analysis previously performed. 
+The goal of this project is to implement a system prototype for a Smart Home system integrating the security requirements identified on the Attack-Defence Tree analysis previously performed.  
 
 The prototype is composed of one client device that manages several thermostat controller nodes. The MQTT (Message Queuing Telemetry Transport) message broker has been used to manage communication between nodes. The MQTT has become the standard protocol for the Internet of Things (IoT) due to its simple and lightweight clients that require minimal resources (Yuan, 2021). MQTT aims to be a protocol for resource-constrained devices and low-bandwidth, high-latency, unreliable networks (MQTT, 2021). Furthermore, MQTT includes security features such as data-in-transit encryption using TLS and strong client authentication that covers most of the security requirements found in our analysis. 
 
@@ -26,16 +26,16 @@ The prototype has been developed based on the following SysML diagrams:
 
 ![Sequence Diagramm MQTT Authentication](https://i.imgur.com/ipjzlEU.png)
 
-![Sequence Diagramm MQTTS Handshake](https://i.imgur.com/DB9Qv4B.png)
+![Sequence Diagramm MQTTS Handshake](https://i.imgur.com/4Orb2hk.png)
 
 ## Vulnerabilities and Mitigations
-The vulnerability analysis presented in the Design Document has been extended to include a quantitative assessment based on likelihood and impact scales. This allows us to create a raking and prioritize the implementation of the mitigation measures ([Appendix A: Vulnerability Risk Assessment](#appendix-a-vulnerability-risk-assessment)). 
+The vulnerability analysis presented in the Design Document has been extended to include a quantitative assessment based on likelihood and impact scales. This allows us to create a ranking and prioritize the implementation of the mitigation measures ([Appendix A: Vulnerability Risk Assessment](#appendix-a-vulnerability-risk-assessment)). 
 
 In addition to our analysis, the OWASP top 10 vulnerabilities of IoT (OWASP, 2018) were considered when identifying security controls.
 
 
 ## Security Requirements
-These are the Security Controls that have been implemented in the prototype: 
+These are the Security Controls that have been implemented in the prototype:
 * The encryption of data in transit has been implemented by enabling TLS certificates on the MQTT Broker side.
 * Authentication of devices before receiving and transmitting data done with username and password.
 * To implement the secure boot feature or verification of code signatures, an RSA public/private key pair has been created and the private key has been used to sign the files.  The signatures for the device and controller python files are stored in the respective config folders. Upon execution of the code, the source code is checked against its signature to ensure that the file has not been tampered with.
@@ -45,13 +45,12 @@ These are the Security Controls that have been implemented in the prototype:
 * Protection of user credentials has been implemented by using symmetric encryption keys to generate and validate credentials.
 
 
-
 ## Implementation Challenges
 Docker containers have been used in the prototype to configure light virtual machine containers to simulate a distributed system (Docker, N.D.). 
 
 Common distributed system challenges include latency and message loss, our prototype also has IoT limitations like bandwidth and processing power (Gerber & Romeo, 2020). The table below demonstrates what measures MQTT has taken to lessen these challenges:
 
-![IoT Challenges](https://i.imgur.com/WiYWpBH.png)
+![IoT Challenges](https://i.imgur.com/svc4oWE.png)
 
 *Figure 5: Challenges in IoT and Mitigations offered by MQTT.*
 
@@ -67,7 +66,7 @@ The main goal of this assessment is to assign a risk score to each vulnerability
 
 The following table includes a list of vulnerabilities found and the risk evaluation along with the mitigations identified for each vulnerability: 
 
-![Vulnerability Impact and Liklihood](https://i.imgur.com/vOXQg2y.png)
+![Vulnerability Impact and Likelihood](https://i.imgur.com/WTg7doo.png)
 
 *Figure 6: Vulnerabilities and their Impact and Liklihood.*
 
@@ -90,14 +89,14 @@ For the proof-of-concept implementation, the system fully utilises the MQTTS pro
 
 As an additional layer of security, user authentication has been enabled at the Broker level. Whenever a device wants to connect to the Broker it has to supply a valid username and password combination.
 
-The prototype has been developed in Python and the files are executed locally. Docker containers have been configured to run the client device and the IoT controller (Python flies) on separate instances to simulate distributed systems.
+The prototype has been developed in Python and the files are executed locally. Docker containers have been configured to run the client device and the IoT controller (Python files) on separate instances to simulate distributed systems.
 
 ### Folder Structure
 The project includes the four main folders:
 
-**Controller**: Includes all files necessary to run the controller (subscriber) of the OiT system. Prints back device temperatures and Broker logs to the user.
+**Controller**: Includes all files necessary to run the controller (subscriber) of the IoT system. Prints back device temperatures and Broker logs to the user.
 
-**Device**: Includes all files necessary to run the thermometer device (publisher) of the OiT system. Publishes test data for a given device to display back to the controller.
+**Device**: Includes all files necessary to run the thermometer device (publisher) of the IoT system. Publishes test data for a given device to display back to the controller.
 
 **Latency-test**: Includes a test script to measure the latency between the publishing of the messages and the reception at the subscriber.
 
@@ -111,7 +110,7 @@ The project includes the four main folders:
 
 
 ## APPENDIX C: Execution Instructions via Docker
-To make the execution as seamless as possible, we created Dockerfiles for both the Client Device and the Controller. This allows for building Docker Images for both and launching one or more of each as separate Container Instances.
+To make the execution as seamless as possible, we created Dockerfiles for both the Client Device and the Controller. This allows for building Docker Images for both and launching one or more of each as separate Container Instances. 
 
 Docker is an open-source project that automates the deployment of applications inside software containers, by providing an additional layer of abstraction and automation of operating-system-level virtualization on Linux, Mac OS and Windows.
 
@@ -203,6 +202,7 @@ MQTT (N.D) MQTT - The Standard for IoT Messaging. Available from: https://mqtt.o
 OWASP (2018) OWASP Top 10 Internet of Things. Available from: https://owasp.org/www-pdf-archive/OWASP-IoT-Top-10-2018-final.pdf [Accessed 28 February 2022]
 
 Sutton, D. (2014) Information Risk Management. 2nd ed. Swindon, UK: BCS Learning & Development Limited. 
+
 The HiveMQ Team (2015) Quality of Service 0,1 & 2 - MQTT Essentials: Part 6. Available from: https://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels/ [Accessed 27 February 2022]
 
 Tracy, P (2016) MQTT protocol minimizes network bandwidth for the internet of things. Available from: https://www.rcrwireless.com/20161129/fundamentals/mqtt-internet-of-things-tag31-tag99 [Accessed 26 February 2022]

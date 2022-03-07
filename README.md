@@ -110,27 +110,29 @@ The project includes the four main folders:
 
 
 ## APPENDIX C: Execution Instructions via Docker
-To make the execution as seamless as possible, we created Dockerfiles for both the Client Device and the Controller. This allows for building Docker Images for both and launching one or more of each as separate Container Instances. 
+To make the execution as seamless as possible, we created Dockerfiles for both the Client Device and the Controller. This allows for building Docker Images for both and launching one or more of each as separate Container Instances.
 
 Docker is an open-source project that automates the deployment of applications inside software containers, by providing an additional layer of abstraction and automation of operating-system-level virtualization on Linux, Mac OS and Windows.
 
-We have included the .tar archives of the docker images directly in the Repo, which can be loaded using the command:
+We have created a DockerHup repository to store the container images and from where they can be pulled. The repository can be found here: https://hub.docker.com/r/marzioh/ssa-project/tags.
 
-`$ docker import file [REPOSITORY[:TAG]]`
+To pull both the controller and device images, please use the following commands:
 
-Documentation: https://docs.docker.com/engine/reference/commandline/import/
+```
+$ docker pull marzioh/ssa-project:device
+$ docker pull marzioh/ssa-project:controller
+```
+
+Documentation: https://docs.docker.com/engine/reference/commandline/pull/
 
 Once the images are present in your Docker, you will be able to run a new container using the images. To do so, please ensure that you run the container in interactive mode, to be able to interact with the python user inputs:
 
-`$ docker run -it [REPOSITORY[:TAG]]`
+```
+$ docker run -it marzioh/ssa-project:device
+$ docker run -it marzioh/ssa-project:controller
+```
 
 Documentation: https://docs.docker.com/engine/reference/commandline/run/
-
-When importing the images you can set a repository name and tag, which you will need to reference in the run command. One example for naming conventions could for instance be:
-```
-ssa-project:controller
-ssa-project:device
-```
 
 By executing the “run” command multiple times on the same image, you can spin up multiple containers for the same category. This makes sense for when you want to test multiple devices running on the same network and all communicating with a single controller.
 
